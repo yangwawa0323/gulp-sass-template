@@ -1,4 +1,5 @@
 let gulp = require('gulp');
+let concat = require('gulp-concat');
 let uglify = require('gulp-uglify');
 let sourcemaps = require('gulp-sourcemaps');
 let sass = require('gulp-sass')(require('sass'));
@@ -26,6 +27,13 @@ const AUTOPREFIXER_BROWSERS = [
 // scripts
 gulp.task('scripts', async function () {
 	console.log('[scripts] task:');
+	return gulp
+		.src(SCRIPT_PATH)
+		.pipe(concat('index.js'))
+		.pipe(sourcemaps.init())
+		.pipe(uglify())
+		.pipe(sourcemaps.write('maps'))
+		.pipe(gulp.dest(DIST_PATH));
 });
 
 // styles
@@ -53,6 +61,7 @@ gulp.task('default', function () {
 
 gulp.task('watch', async function () {
 	console.log('[watch] task: ');
+	await gulp.watch(SCRIPT_PATH, gulp.series('scripts'));
 	await gulp.watch(SCSS_PATH, gulp.series('styles'));
 });
 
