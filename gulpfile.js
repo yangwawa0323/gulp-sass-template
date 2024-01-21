@@ -50,8 +50,8 @@ gulp.task('styles', async function () {
 		.pipe(
 			postcss([autoprefixer({ overrideBrowserslist: AUTOPREFIXER_BROWSERS })])
 		)
-		.pipe(sourcemaps.write(`maps`))
 		.pipe(cleanCSS({ compatibility: 'ie8' }))
+		.pipe(sourcemaps.write(`maps`))
 		.pipe(gulp.dest(DIST_PATH));
 });
 
