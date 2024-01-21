@@ -1,6 +1,8 @@
 let gulp = require('gulp');
 let concat = require('gulp-concat');
 let uglify = require('gulp-uglify');
+let babel = require('gulp-babel');
+
 let sourcemaps = require('gulp-sourcemaps');
 let sass = require('gulp-sass')(require('sass'));
 let postcss = require('gulp-postcss');
@@ -31,6 +33,11 @@ gulp.task('scripts', async function () {
 		.src(SCRIPT_PATH)
 		.pipe(concat('index.js'))
 		.pipe(sourcemaps.init())
+		.pipe(
+			babel({
+				presets: ['@babel/env'],
+			})
+		)
 		.pipe(uglify())
 		.pipe(sourcemaps.write('maps'))
 		.pipe(gulp.dest(DIST_PATH));
@@ -59,10 +66,10 @@ gulp.task('default', function () {
 	console.log('[default] task: ');
 });
 
-gulp.task('watch', async function () {
+gulp.task('watch', function () {
 	console.log('[watch] task: ');
-	await gulp.watch(SCRIPT_PATH, gulp.series('scripts'));
-	await gulp.watch(SCSS_PATH, gulp.series('styles'));
+	gulp.watch(SCRIPT_PATH, gulp.series('scripts'));
+	gulp.watch(SCSS_PATH, gulp.series('styles'));
 });
 
 // function buildStyles() {
